@@ -18,16 +18,18 @@ module PayuIndia #:nodoc:
     #       :furl => 'http://localhost:3000/payu_callback',
     #       :html => { :id => 'payment-form' } %>
 
-    def payment_form_for_payu(key, salt, options = {}, btn_html = nil)
-      if !options.is_a?(Hash) || !key.is_a?(String) || !salt.is_a?(String) || (btn_html != nil && !btn_html.is_a?(String))
-        concat("Something Wrong! params order -> key (String), salt (String), options (optional Hash), btn_html(optional String) ")
+    def payment_form_for_payu(key, salt, options = {})
+      if !options.is_a?(Hash) || !key.is_a?(String) || !salt.is_a?(String)
+        concat("Something Wrong! params order -> key (String), salt (String), options (Hash) ")
         nil
       else
         form_options = options.delete(:html) || {}
+        btn_text = options.delete(:btn_text) || "Pay with PayU"
+        force_production = options.delete(:force_production)
         service = PayuIndia::Helper.new(key, salt, options)
         result = []
 
-        result << form_tag(PayuIndia.service_url, form_options.merge(:method => :post))
+        result << form_tag(PayuIndia.service_url(force_production), form_options.merge(:method => :post))
 
         result << hidden_field_tag('key', key)
 
@@ -35,8 +37,8 @@ module PayuIndia #:nodoc:
           result << hidden_field_tag(field, value)
         end
 
-        result << (btn_html ? btn_html : '<input type=submit value=" Pay with PayU ">')
-        result << '</form>'
+        result << "<input type=\"submit\" value=\"#{btn_text}\">"
+        result << "</form>"
         result= result.join("\n")
 
         concat(result.respond_to?(:html_safe) ? result.html_safe : result)
