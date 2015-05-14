@@ -25,7 +25,7 @@ module PayuIndia #:nodoc:
       else
         form_options = options.delete(:html) || {}
         btn_text = options.delete(:btn_text) || "Pay with PayU"
-        force_production = options.delete(:force_production)
+        force_production = options.delete(:force_production) || false
         service = PayuIndia::Helper.new(key, salt, options)
         result = []
 
