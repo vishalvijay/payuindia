@@ -40,7 +40,7 @@ module PayuIndia
 
     def form_fields
       sanitize_fields
-      @options.merge(:hash => generate_checksum)
+      @options.merge(:hash => generate_checksum, :key => @key)
     end
 
     def generate_checksum

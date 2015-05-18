@@ -31,8 +31,6 @@ module PayuIndia #:nodoc:
 
         result << form_tag(PayuIndia.service_url(force_production), form_options.merge(:method => :post))
 
-        result << hidden_field_tag('key', key)
-
         service.form_fields.each do |field, value|
           result << hidden_field_tag(field, value)
         end
