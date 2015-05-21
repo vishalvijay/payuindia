@@ -1,3 +1,4 @@
+require "cgi"
 require "payuindia/version"
 require 'payuindia/action_view_helper'
 ActionView::Base.send(:include, PayuIndia::ActionViewHelper)
@@ -26,7 +27,8 @@ module PayuIndia
   end
 
   def self.checksum(merchant_id, secret_key, payload_items )
-    Digest::SHA512.hexdigest([merchant_id, *payload_items, secret_key].join("|"))
+    url_encoded_payload_items = payload_items.map{|str| CGI.escape(str)}
+    Digest::SHA512.hexdigest([merchant_id, *url_encoded_payload_items, secret_key].join("|"))
   end
 
   class Helper
