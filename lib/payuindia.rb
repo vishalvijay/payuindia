@@ -27,7 +27,7 @@ module PayuIndia
   end
 
   def self.checksum(merchant_id, secret_key, payload_items )
-    url_encoded_payload_items = payload_items.map{|str| CGI.escape(str)}
+    url_encoded_payload_items = payload_items.map{|str| CGI.escape(str.to_s)}
     Digest::SHA512.hexdigest([merchant_id, *url_encoded_payload_items, secret_key].join("|"))
   end
 
