@@ -32,7 +32,7 @@ module PayuIndia #:nodoc:
         result << form_tag(PayuIndia.service_url(force_production), form_options.merge(:method => :post))
 
         service.form_fields.each do |field, value|
-          result << hidden_field_tag(field, value)
+          result << hidden_field_tag(field, CGI.escape(value.to_s))
         end
 
         result << "<input type=\"submit\" value=\"#{btn_text}\">"
