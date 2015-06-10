@@ -2,6 +2,7 @@ require "payuindia/version"
 require 'payuindia/helper'
 require 'payuindia/notification'
 require 'payuindia/return'
+require 'payuindia/info_api'
 require 'payuindia/action_view_helper'
 ActionView::Base.send(:include, PayuIndia::ActionViewHelper)
 
