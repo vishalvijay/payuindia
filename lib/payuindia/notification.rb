@@ -1,4 +1,4 @@
-class Helper
+module PayuIndia
   class Notification
     def initialize(post, options = {})
       @key = options[:key]
