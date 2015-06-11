@@ -21,13 +21,12 @@ module PayuIndia
     end
 
     def process
-      binding.pry
-      result = {error: false, response: nil}
+      result = nil
       params = options.merge({hash: checksum, key: key})
       begin
-        result[:response] = HTTParty.post(service_url, body: params).parsed_response
+        r = HTTParty.post(service_url, body: params).parsed_response
+        result = PayuIndia::InfoApiResponse.new JSON.parse(r, symbolize_names: true), options
       rescue => e
-        result[:error] = true
       end
       result
     end
@@ -61,16 +60,7 @@ module PayuIndia
     end
 
     def checksum
-      arr = []
-      (1..15).each do |i|
-        r = options["var#{i}".to_sym]
-        if r
-          arr << r
-        else
-          break
-        end
-      end
-      PayuIndia.checksum(key, salt, [options[:command], *arr])
+      PayuIndia.checksum(key, salt, [options[:command], options[:var1]])
     end
   end
 end
