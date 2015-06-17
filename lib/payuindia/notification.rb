@@ -136,6 +136,10 @@ module PayuIndia
       @message || "#{params['error']} - #{params['error_Message']}"
     end
 
+    def details_message
+      params["field9"]
+    end
+
     def acknowledge(authcode = nil)
       checksum_ok?
     end
